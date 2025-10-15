@@ -5,7 +5,7 @@ from transformers import pipeline
 import matplotlib.pyplot as plt
 from streamlit_drawable_canvas import st_canvas
 
-# 🧠 Load models
+
 @st.cache_resource
 def load_models():
     text_gen = pipeline("text2text-generation", model="google/flan-t5-large")
@@ -14,11 +14,11 @@ def load_models():
 
 model, sentiment_model = load_models()
 
-# 🌸 Page setup
+
 st.set_page_config(page_title="Mental Health Companion", page_icon="💬", layout="centered")
 st.title("🌿 Mental Health Companion Dashboard")
 
-# --- Session state setup ---
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "mood_log" not in st.session_state:
@@ -28,7 +28,7 @@ if "journal" not in st.session_state:
 if "last_journal_time" not in st.session_state:
     st.session_state.last_journal_time = None
 
-# --- Personalization: Mood-based themes ---
+
 mood_colors = {
     "😊 Happy": "#FFF9C4",
     "😔 Sad": "#E1F5FE",
@@ -85,7 +85,7 @@ def plot_mood_trend():
     else:
         st.info("No mood data yet. Log your mood to see trends!")
 
-# --- Dashboard Tabs ---
+
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "💬 Chat Companion",
     "📊 Mood Tracker",
@@ -94,7 +94,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📈 Dashboard"
 ])
 
-# --- Tab 1: Chat Companion ---
+
 with tab1:
     st.subheader("💬 Chat with Your Companion")
     for msg in st.session_state.messages:
@@ -135,7 +135,7 @@ with tab1:
         st.session_state.messages = []
         st.experimental_rerun()
 
-# --- Tab 2: Mood Tracker ---
+
 with tab2:
     st.subheader("📊 Track Your Mood")
     mood = st.selectbox("How's your mood right now?", list(mood_colors.keys()))
@@ -144,7 +144,7 @@ with tab2:
         st.success(f"Mood logged: {mood}")
     plot_mood_trend()
 
-# --- Tab 3: Journaling ---
+
 with tab3:
     st.subheader("📓 Daily & Gratitude Journal")
 
@@ -182,7 +182,7 @@ with tab3:
             tag_display = f"**[{entry.get('tag', 'Untagged')}]**"
             st.markdown(f"- *{entry['time']}* {tag_display}: {entry['entry']}")
 
-# --- Tab 4: Relaxation Tools ---
+
 with tab4:
     st.subheader("🌿 Relaxation Toolkit")
     if st.button("Start Breathing Exercise"):
@@ -215,7 +215,7 @@ with tab4:
     if canvas_result.image_data is not None:
         st.success("Your drawing is saved in memory. Feel free to clear and start again!")
 
-# --- Tab 5: Dashboard Summary ---
+
 with tab5:
     st.subheader("📈 Wellness Summary")
     st.markdown(f"**Total Journal Entries:** {len(st.session_state.journal)}")
@@ -224,3 +224,4 @@ with tab5:
     if st.session_state.last_journal_time:
         last_entry = st.session_state.last_journal_time.strftime("%Y-%m-%d %H:%M")
         st.markdown(f"**Last Journal Entry:** {last_entry}")
+
