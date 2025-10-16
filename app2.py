@@ -5,6 +5,25 @@ from transformers import pipeline
 import matplotlib.pyplot as plt
 from streamlit_drawable_canvas import st_canvas
 
+# --- Diagnostic Sidebar ---
+import os
+import platform
+import streamlit as st
+
+with st.sidebar:
+    st.markdown("### 🧪 Environment Info")
+    st.write("**OS:**", platform.system())
+    st.write("**OS Version:**", platform.version())
+    st.write("**Python Version:**", platform.python_version())
+    st.write("**Current User:**", os.getenv("USER") or os.getenv("USERNAME") or "Unknown")
+    st.write("**Working Directory:**", os.getcwd())
+
+    st.markdown("### 🌐 Environment Variables")
+    for key in ["HOME", "PATH", "STREAMLIT_HOME", "HOSTNAME", "HF_SPACE_ID"]:
+        st.write(f"**{key}:**", os.getenv(key, "Not set"))
+
+    if "HF_SPACE_ID" in os.environ:
+        st.success("✅ Running on Hugging Face Spaces")
 
 @st.cache_resource
 def load_models():
@@ -224,4 +243,5 @@ with tab5:
     if st.session_state.last_journal_time:
         last_entry = st.session_state.last_journal_time.strftime("%Y-%m-%d %H:%M")
         st.markdown(f"**Last Journal Entry:** {last_entry}")
+
 
